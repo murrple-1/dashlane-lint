@@ -2,8 +2,11 @@ import argparse
 import json
 
 
-def _print_entry(entry):
-    print(entry['title'])
+def _print_entry(entry, with_domain=False):
+    if not with_domain:
+        print(entry['title'])
+    else:
+        print(entry['title'], '|', entry['domain'])
 
 
 def _print_where_email_is_login(_json):
@@ -18,10 +21,11 @@ def _print_where_email_is_login(_json):
 
             count += 1
 
-    print('Total: {}'.format(count))
+    print(f'Total: {count}')
 
 
 def _print_where_no_domain(_json):
+    print('Note: lack of domain does not necessarily mean the domain isn\'t set...')
     print('No Domain:')
 
     count = 0
@@ -33,7 +37,22 @@ def _print_where_no_domain(_json):
 
             count += 1
 
-    print('Total: {}'.format(count))
+    print(f'Total: {count}')
+
+
+def _print_where_domain(_json):
+    print('Domain:')
+
+    count = 0
+    for entry in _json['AUTHENTIFIANT']:
+        domain = entry['domain']
+
+        if isinstance(domain, str) and domain != '':
+            _print_entry(entry, True)
+
+            count += 1
+
+    print(f'Total: {count}')
 
 
 def main():
@@ -41,6 +60,7 @@ def main():
     parser.add_argument('json_file')
     parser.add_argument('-e', '--email-as-login', action='store_true')
     parser.add_argument('-d', '--no-domain', action='store_true')
+    parser.add_argument('-D', '--good-domain', action='store_true')
 
     args = parser.parse_args()
 
@@ -53,6 +73,9 @@ def main():
 
     if args.no_domain:
         _print_where_no_domain(_json)
+
+    if args.good_domain:
+        _print_where_domain(_json)
 
 
 if __name__ == '__main__':
