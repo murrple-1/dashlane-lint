@@ -16,7 +16,7 @@ def _print_where_email_is_login(_json):
     for entry in _json['AUTHENTIFIANT']:
         login = entry['login']
         secondary_login = entry['secondaryLogin']
-        if (isinstance(login, str) and '@' in login) or (isinstance(secondary_login, str) and '@' in secondary_login):
+        if (type(login) is str and '@' in login) or (type(secondary_login) is str and '@' in secondary_login):
             _print_entry(entry)
 
             count += 1
@@ -32,7 +32,7 @@ def _print_where_no_domain(_json):
     for entry in _json['AUTHENTIFIANT']:
         domain = entry['domain']
 
-        if not isinstance(domain, str) or domain.strip() == '':
+        if type(domain) is not str or domain.strip() == '':
             _print_entry(entry)
 
             count += 1
@@ -47,7 +47,7 @@ def _print_where_domain(_json):
     for entry in _json['AUTHENTIFIANT']:
         domain = entry['domain']
 
-        if isinstance(domain, str) and domain != '':
+        if type(domain) is str and domain != '':
             _print_entry(entry, True)
 
             count += 1
