@@ -9,11 +9,11 @@ def _print_entry(entry, with_domain=False):
         print(entry['title'], '|', entry['domain'])
 
 
-def _print_where_email_is_login(_json):
+def _print_where_email_is_login(json_):
     print('Email is Login:')
 
     count = 0
-    for entry in _json['AUTHENTIFIANT']:
+    for entry in json_['AUTHENTIFIANT']:
         login = entry['login']
         secondary_login = entry['secondaryLogin']
         if (type(login) is str and '@' in login) or (type(secondary_login) is str and '@' in secondary_login):
@@ -24,12 +24,12 @@ def _print_where_email_is_login(_json):
     print(f'Total: {count}')
 
 
-def _print_where_no_domain(_json):
+def _print_where_no_domain(json_):
     print('Note: lack of domain does not necessarily mean the domain isn\'t set...')
     print('No Domain:')
 
     count = 0
-    for entry in _json['AUTHENTIFIANT']:
+    for entry in json_['AUTHENTIFIANT']:
         domain = entry['domain']
 
         if type(domain) is not str or domain.strip() == '':
@@ -40,11 +40,11 @@ def _print_where_no_domain(_json):
     print(f'Total: {count}')
 
 
-def _print_where_domain(_json):
+def _print_where_domain(json_):
     print('Domain:')
 
     count = 0
-    for entry in _json['AUTHENTIFIANT']:
+    for entry in json_['AUTHENTIFIANT']:
         domain = entry['domain']
 
         if type(domain) is str and domain != '':
@@ -64,18 +64,18 @@ def main():
 
     args = parser.parse_args()
 
-    _json = None
+    json_ = None
     with open(args.json_file, 'r') as f:
-        _json = json.load(f)
+        json_ = json.load(f)
 
     if args.email_as_login:
-        _print_where_email_is_login(_json)
+        _print_where_email_is_login(json_)
 
     if args.no_domain:
-        _print_where_no_domain(_json)
+        _print_where_no_domain(json_)
 
     if args.good_domain:
-        _print_where_domain(_json)
+        _print_where_domain(json_)
 
 
 if __name__ == '__main__':
